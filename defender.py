@@ -4,6 +4,8 @@ import socket
 import json
 from datetime import datetime
 
+# testing git permissions
+
 HOST = 'localhost'
 PORT = 11111
 
