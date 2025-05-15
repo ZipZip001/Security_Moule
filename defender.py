@@ -1,5 +1,4 @@
 # defender.py
-
 import socket
 import json
 from datetime import datetime

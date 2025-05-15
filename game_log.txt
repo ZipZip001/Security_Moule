@@ -15,3 +15,19 @@
 2025-05-12 21:09:28 - [DEFENDER] Detection Chance: 96.00%
 2025-05-12 21:09:28 - [ATTACKER] Skill Requirement: 4
 2025-05-12 21:09:28 - [DEFENDER] Skill Requirement: 5
+2025-05-15 13:49:55 - -------------------------------------------------------------
+2025-05-15 13:49:55 - [ATTACKER] Action: Initial Access - Spearphishing
+2025-05-15 13:49:55 - [ATTACKER] Success Chance: 100.00%
+2025-05-15 13:49:55 - [DEFENDER] Success Chance: 76.00%
+2025-05-15 13:49:55 - [ATTACKER] Detection Chance: 93.00%
+2025-05-15 13:49:55 - [DEFENDER] Detection Chance: 96.00%
+2025-05-15 13:49:55 - [ATTACKER] Skill Requirement: 4
+2025-05-15 13:49:55 - [DEFENDER] Skill Requirement: 5
+2025-05-15 13:50:14 - -------------------------------------------------------------
+2025-05-15 13:50:14 - [ATTACKER] Action: Initial Access - Spearphishing
+2025-05-15 13:50:14 - [ATTACKER] Success Chance: 100.00%
+2025-05-15 13:50:14 - [DEFENDER] Success Chance: 76.00%
+2025-05-15 13:50:14 - [ATTACKER] Detection Chance: 93.00%
+2025-05-15 13:50:14 - [DEFENDER] Detection Chance: 96.00%
+2025-05-15 13:50:14 - [ATTACKER] Skill Requirement: 4
+2025-05-15 13:50:14 - [DEFENDER] Skill Requirement: 5
