@@ -5,7 +5,7 @@ from app.logic.atk_detection_calculation_3 import set_attack_detection_chance
 from app.logic.def_detection_calculation_4 import set_defense_detection_chance
 from app.logic.atk_skill_calculation_5 import set_attack_skill_requirement
 from app.logic.def_skill_calculation_6 import set_defense_skill_requirement
-
+from app.logic.damage_impact_calculation_7 import confidentiality_damage_impact
 battle_bp = Blueprint('battle', __name__)
 
 COUNTER_MAP = {
@@ -23,7 +23,7 @@ COUNTER_MAP = {
     "Script Execution": "App Execution Control"
 }
 
-@battle_bp.route('/simulate', methods=['POST'])
+@battle_bp.route('/atk_def_chancechance', methods=['POST'])
 def simulate_attack_defense():
     data = request.get_json()
 
@@ -45,33 +45,6 @@ def simulate_attack_defense():
     atk_chance = calculate_attack_success_chance(atk_data)
     def_chance = calculate_defense_success_chance(def_data)
 
-    atk_detection = set_attack_detection_chance(
-        atk_data["action"],
-        atk_data["action"].get("action_type", "neutral"),
-        atk_data["attacker"].get("skill", 0),
-        atk_data["attacker"].get("insight", 0)
-    )
-    def_detection = set_defense_detection_chance(
-        def_data["action"],
-        def_data["action"].get("action_type", "neutral"),
-        def_data["defender"].get("skill", 0),
-        def_data["defender"].get("insight", 0)
-    )
-
-    attack_skill = set_attack_skill_requirement(
-        atk_data.get("complexity", "low"),
-        atk_data.get("target", "none"),
-        atk_data.get("permissions", "user"),
-        atk_data.get("interaction", False),
-        atk_data.get("stages", [])
-    )
-    defense_skill = set_defense_skill_requirement(
-        def_data.get("complexity", "low"),
-        def_data.get("long_term", False),
-        def_data.get("types", [])
-    )
-
-
     if atk_name in COUNTER_MAP and COUNTER_MAP[atk_name] == def_name:
         atk_chance = 0
         def_chance = round(min(def_chance + 0.2, 1.0), 2)
@@ -82,12 +55,65 @@ def simulate_attack_defense():
     return jsonify({
         
         "Tỷ lệ tấn công thành công": atk_chance,
-        "Khả năng phát hiện phòng thủ": def_detection,
         "Cơ hội phòng thủ thành công": def_chance,
-        "Khả năng phát hiện tấn công:": atk_detection,
-
-        "counter_effect": message,
-
-        "Điểm kỹ năng tấn công cần thiết": attack_skill,
-        "Điểm kỹ năng phòng thủ cần thiết": defense_skill
+        "counter_effect": message
     })
+
+@battle_bp.route('/attack_detection', methods=['POST'])
+def attack_detection():
+    data = request.get_json()
+    chance = set_attack_detection_chance(
+        data["action"],
+        data.get("action_type", "neutral"),
+        data.get("skill", 0),
+        data.get("insight", 0)
+    )
+    return jsonify({"attack_detection_chance": chance})
+
+@battle_bp.route('/defense_detection', methods=['POST'])
+def defense_detection():
+    data = request.get_json()
+    chance = set_defense_detection_chance(
+        data["action"],
+        data.get("action_type", "neutral"),
+        data.get("skill", 0),
+        data.get("insight", 0)
+    )
+    return jsonify({"defense_detection_chance": chance})
+
+@battle_bp.route('/attack_skill_requirement', methods=['POST'])
+def attack_skill_requirement():
+    data = request.get_json()
+    skill = set_attack_skill_requirement(
+        data.get("complexity", "low"),
+        data.get("target", "none"),
+        data.get("permissions", "user"),
+        data.get("interaction", False),
+        data.get("stages", [])
+    )
+    return jsonify({"attack_skill_required": skill})
+
+@battle_bp.route('/defense_skill_requirement', methods=['POST'])
+def defense_skill_requirement():
+    data = request.get_json()
+    skill = set_defense_skill_requirement(
+        data.get("complexity", "low"),
+        data.get("long_term", False),
+        data.get("types", [])
+    )
+    return jsonify({"defense_skill_required": skill})
+
+@battle_bp.route('/confidentiality_damage', methods=['POST'])
+def confidentiality_damage():
+    data = request.get_json()
+
+    skill_req = data.get("skill_req", 1)
+    applicability = data.get("applicability", 1)
+    stages = data.get("stages", [])
+
+    damage = confidentiality_damage_impact(skill_req, applicability, stages)
+
+    return jsonify({
+        "confidentiality_damage": damage
+    })
+
