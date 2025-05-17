@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.logic.attack import calculate_attack_success_chance
-from app.logic.defense import calculate_defense_success_chance
+from app.logic.attack_success_caculate import calculate_attack_success_chance
+from app.logic.defense_success_caculate import calculate_defense_success_chance
 from app.logic.atk_detection_calculation_3 import set_attack_detection_chance
 from app.logic.def_detection_calculation_4 import set_defense_detection_chance
 from app.logic.atk_skill_calculation_5 import set_attack_skill_requirement
@@ -75,7 +75,7 @@ def defense_detection():
     data = request.get_json()
     chance = set_defense_detection_chance(
         data["action"],
-        data.get("action_type", "neutral"),
+        data.get("actor", {}).get("action_type", "neutral"),
         data.get("skill", 0),
         data.get("insight", 0)
     )

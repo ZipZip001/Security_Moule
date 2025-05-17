@@ -23,4 +23,4 @@ def calculate_defense_success_chance(data):
     chance += 0.05 * defender["skill"]
     chance += 0.02 * defender["insight"]
 
-    return round(min(chance, 1.0), 2)
+    return round(min(chance, 0.99), 2)
