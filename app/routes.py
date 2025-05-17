@@ -3,6 +3,8 @@ from app.logic.attack import calculate_attack_success_chance
 from app.logic.defense import calculate_defense_success_chance
 from app.logic.atk_detection_calculation_3 import set_attack_detection_chance
 from app.logic.def_detection_calculation_4 import set_defense_detection_chance
+from app.logic.atk_skill_calculation_5 import set_attack_skill_requirement
+from app.logic.def_skill_calculation_6 import set_defense_skill_requirement
 
 battle_bp = Blueprint('battle', __name__)
 
@@ -33,11 +35,11 @@ def simulate_attack_defense():
 
     atk_data = {
         "action": atk_action,
-        "attacker": data['attacker']['profile']
+        "attacker": data['attacker']['actor']
     }
     def_data = {
         "action": def_action,
-        "defender": data['defender']['profile']
+        "defender": data['defender']['actor']
     }
 
     atk_chance = calculate_attack_success_chance(atk_data)
@@ -49,7 +51,6 @@ def simulate_attack_defense():
         atk_data["attacker"].get("skill", 0),
         atk_data["attacker"].get("insight", 0)
     )
-
     def_detection = set_defense_detection_chance(
         def_data["action"],
         def_data["action"].get("action_type", "neutral"),
@@ -57,6 +58,18 @@ def simulate_attack_defense():
         def_data["defender"].get("insight", 0)
     )
 
+    attack_skill = set_attack_skill_requirement(
+        atk_data.get("complexity", "low"),
+        atk_data.get("target", "none"),
+        atk_data.get("permissions", "user"),
+        atk_data.get("interaction", False),
+        atk_data.get("stages", [])
+    )
+    defense_skill = set_defense_skill_requirement(
+        def_data.get("complexity", "low"),
+        def_data.get("long_term", False),
+        def_data.get("types", [])
+    )
 
 
     if atk_name in COUNTER_MAP and COUNTER_MAP[atk_name] == def_name:
@@ -73,5 +86,8 @@ def simulate_attack_defense():
         "Cơ hội phòng thủ thành công": def_chance,
         "Khả năng phát hiện tấn công:": atk_detection,
 
-        "counter_effect": message
+        "counter_effect": message,
+
+        "Điểm kỹ năng tấn công cần thiết": attack_skill,
+        "Điểm kỹ năng phòng thủ cần thiết": defense_skill
     })

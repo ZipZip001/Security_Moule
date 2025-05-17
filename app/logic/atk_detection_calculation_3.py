@@ -29,7 +29,7 @@ def set_attack_detection_chance(action, action_type, skill, insight):
             detection_chance += 0.1
 
     # Bước 30–31: Skill & Insight modifiers
-    detection_chance -= 0.05 * skill
+    detection_chance += 0.05 * skill
     detection_chance += 0.02 * insight
 
     # Bước 32–33: Clamp to [0, 1]

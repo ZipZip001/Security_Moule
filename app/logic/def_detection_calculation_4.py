@@ -22,7 +22,7 @@ def set_defense_detection_chance(action, action_type, skill, insight):
         detection_chance = min(1.0, 2 * detection_chance)
 
     # Bước 20–23: Skill & Insight modifiers
-    detection_chance -= 0.05 * skill
+    detection_chance += 0.05 * skill
     detection_chance += 0.02 * insight
 
-    return round(max(0.0, min(detection_chance, 1.0)), 4)
+    return round(max(0.0, min(detection_chance, 0.99)), 4)

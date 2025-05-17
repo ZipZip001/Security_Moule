@@ -33,4 +33,4 @@ def calculate_attack_success_chance(data):
     chance += 0.05 * attacker["skill"]
     chance += 0.02 * attacker["insight"]
 
-    return round(min(chance, 1.0), 2)
+    return round(min(chance, 0.99), 2)
